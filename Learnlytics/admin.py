@@ -5,11 +5,18 @@ from .models import ModelInfo, UserInput  # Import model
 from .admin_views import retrain_model_view  # For retraining button
 
 
-admin.site.register(UserInput)
+@admin.register(UserInput)
+class UserInputAdmin(admin.ModelAdmin):
+    actions = None
 
 
 @admin.register(ModelInfo)
 class ModelInfoAdmin(admin.ModelAdmin):
+    actions = None 
+
+    def get_list_display(self, request):
+        return [f for f in super().get_list_display(request) if f != 'action_checkbox']
+
     list_display = (
         "model_name",
         "training_date",
